@@ -11,3 +11,6 @@ def contact_list(request):
 
 def index_show(request): # refer to templates folder
     return render(request, 'index.html')
+
+def resume_show(request): # refer to templates folder
+    return render(request, 'resume.html')
