@@ -1,5 +1,7 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+
+
 def home_text(request):
     return HttpResponse('<h1> You are in Home page </h1>')
 
