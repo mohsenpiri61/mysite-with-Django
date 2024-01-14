@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Contact(models.Model):
     name = models.CharField(max_length=50)
     email = models.EmailField()
@@ -7,7 +8,6 @@ class Contact(models.Model):
     message = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-
 
     class Meta:
         ordering = ['-created_date']
