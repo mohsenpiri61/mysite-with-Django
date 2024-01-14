@@ -22,7 +22,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('webapp/', include('webapp.urls')),  # we can use '' instead of 'webapp/'
+    path('', include('webapp.urls')),  # we can use '' instead of 'webapp/'
     path('blog_app/', include('blog_app.urls'))
 ]
 
