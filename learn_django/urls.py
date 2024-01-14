@@ -19,10 +19,9 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('webapp.urls')),  # we can use '' instead of 'webapp/'
+    path('', include('webapp.urls')),  # we can use 'webapp/' instead of ''
     path('blog_app/', include('blog_app.urls'))
 ]
 
