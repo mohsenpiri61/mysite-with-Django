@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>FIRST SITUATION </h2>
+    {{post_list}}
+    {% for item in post_list %}
+        <h2>{{item}}</h2>  <!-- item is equal 'item.title' because: refer to def __str__() -->
+        <p>{{item.content}}</p>  <!-- we can use each fields instead 'content' such 'counted_view', 'status', ... -->
+        <small>{{item.created_date}}</small>  <!-- we can use <p> </p> -->
+    {% endfor %}
+    <h2>SECOND SITUATION </h2>
+    {{post_filtered}}
+    {% for item in post_filtered %}
+        <h2>{{item}}</h2>
+        <p>{{item.content}}</p>
+        <small>{{item.created_date}}</small>
+    {% endfor %}
+    <h2>THIRD SITUATION </h2>
+    {% for item in post_list %}
+         {% if item.status == 0 %}  <!-- False is 0 and True is 1 -->
+             <p>not published yet</p>
+         {% else %}
+            <h2>{{item}}</h2>
+            <p>{{item.content}}</p>
+            <small>{{item.published_date}}</small>
+         {% endif %}
+    {% endfor %}
+</body>
+</html>
