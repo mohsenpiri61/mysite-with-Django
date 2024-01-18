@@ -66,15 +66,17 @@
 										</div>
 										<div class="detials">
 											<p>Prev Post</p>
-											{% if prev_obj.exists=False %} {% else %}
+										<!--	{% if prev_obj %} {% else %} -->
 											<a href="{% url 'blog_show:single_blog' pid=prev_obj.id %}"><h4>{{prev_obj}}</h4></a>
-											{% endif %}
+										<!--	{% endif %}   -->
 										</div>
 									</div>
 									<div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
 										<div class="detials">
 											<p>Next Post</p>
-											<a href="#"><h4>{{next_obj}}</h4></a>
+										<!--	{% if next_obj %} {% else %}  -->
+											<a href="{% url 'blog_show:single_blog' pid=next_obj.id %}"><h4>{{next_obj}}</h4></a>
+										<!--	{% endif %}  -->
 										</div>
 										<div class="arrow">
 											<a href="#"><span class="lnr text-white lnr-arrow-right"></span></a>
