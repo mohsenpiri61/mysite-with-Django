@@ -1,0 +1,24 @@
+{% load blog_tags %}
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+        <h2>Testing Page</h2>
+        <p>Total of posts published till date is :{% cal_post as tp %}</p>
+         <p>{{tp}}</p>
+         <!--   ######################  -->
+            {% posts as postschema %}
+            {% for item in postschema %}
+                 <p>{{item}}</p>
+            {% endfor %}
+         <!--   ######################  -->
+            {% for item in postschema %}
+                 <p>{{item.content|snippet:100}}</p>
+            {% endfor %}
+         <!--   ######################    -->
+            {% show_popularposts %}
+</body>
+</html>

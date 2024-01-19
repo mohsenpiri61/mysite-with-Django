@@ -7,7 +7,7 @@ app_name = 'blog_show'
 urlpatterns = [
     path('home', home_view, name='home_blog'),
     path('<int:pid>', single_view, name='single_blog'),
-    path('fetch', fetch_view)
+    path('test', test_view)
     #path('post/<int:pid>', urlpara_view )
 
 ]

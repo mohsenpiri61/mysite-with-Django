@@ -29,3 +29,4 @@ def contact_view(request): # refer to templates folder
 def elements_view(request): # refer to templates folder
     return render(request, 'elements.html')
 
+

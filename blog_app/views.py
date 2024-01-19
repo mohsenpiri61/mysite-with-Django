@@ -34,16 +34,6 @@ def single_view(request, pid):  # refer to blog_items folder in template folder
     context = {'post_obj': post_obj, 'next_obj': next_obj, 'prev_obj': prev_obj}
     return render(request, 'blog_items/blog-single.html', context)
 
-def fetch_view(request):  # refer to templates folder
-    all_post = Post.objects.all()
-    filter_post = Post.objects.filter(status=0)
-    context = {'post_list': all_post, 'post_filtered': filter_post}
-    return render(request, 'fetch.html', context)
 
-
-def urlpara_view(request, pid):  # refer to templates folder
-    #post_id = Post.objects.get(id=pid)
-    post_id = get_object_or_404(Post, id=pid)
-    context = {'post_num': post_id}
-    return render(request, 'urlpara.html', context)
-
+def test_view(request):
+    return render(request, 'test.html')
