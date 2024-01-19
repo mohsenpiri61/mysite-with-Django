@@ -3,8 +3,9 @@
 									<h4 class="category-title">Post Catgories</h4>
 									<ul class="cat-list">
 										<li>
+
 											{% for key,value in cat_dict.items %}
-											<a href="#" class="d-flex justify-content-between">
+											<a href="{% url 'blog_show:category_blog' cat_name=key %}" class="d-flex justify-content-between">
 												<p>{{key}}</p>
 												<p>{{value}}</p>
 											{% endfor %}

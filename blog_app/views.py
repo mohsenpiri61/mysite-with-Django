@@ -3,10 +3,12 @@ from blog_app.models import Post
 from django.utils import timezone
 
 
-def home_view(request):
+def home_view(request, cat_name=None):
     # To display posts whose publication date is before the current day and status=1#
     filter_post = Post.objects.filter(published_date__lt=timezone.now(), status=1)
     #filter_post = Post.objects.filter(status=1)  # posts that only have status=1
+    if cat_name:
+        filter_post = filter_post.filter(category_list__name=cat_name)
     context = {'filter_post': filter_post}
     return render(request, 'blog_items/blog-home.html', context)
 
@@ -37,3 +39,6 @@ def single_view(request, pid):  # refer to blog_items folder in template folder
 
 def test_view(request):
     return render(request, 'test.html')
+
+
+
