@@ -23,11 +23,11 @@ def single_view(request, pid):  # refer to blog_items folder in template folder
     if pid_index == 0:
         next_id = post_ids[pid_index+1]
         next_obj = Post.objects.get(id=next_id)
-        prev_obj = Post.objects.none()
+        prev_obj = None
     elif pid_index == post_ids.index(len(post_ids)-1):
         prev_id = post_ids[pid_index-1]
         prev_obj = Post.objects.get(id=prev_id)
-        next_obj = Post.objects.none()
+        next_obj = None
     else:
         next_id = post_ids[pid_index+1]
         next_obj = Post.objects.get(id=next_id)
