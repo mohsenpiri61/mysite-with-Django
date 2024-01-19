@@ -1,5 +1,5 @@
 from django import template
-from blog_app.models import Post
+from blog_app.models import Post, Category
 
 register = template.Library()
 
@@ -31,3 +31,13 @@ def show_popularposts():
 def latestposts(arg=3):
     post_obj = Post.objects.filter(status=1).order_by('published_date')[:arg]
     return {'post_obj': post_obj}
+
+
+@register.inclusion_tag('blog_items/blog-post-categories.html')
+def cat_of_posts():
+    post_obj = Post.objects.filter(status=1)
+    category_obj = Category.objects.all()
+    cat_dict = {}
+    for cat_name in category_obj:
+        cat_dict[cat_name] = post_obj.filter(category_list=cat_name).count()
+    return {'cat_dict': cat_dict}

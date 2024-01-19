@@ -1,0 +1,16 @@
+{% load blog_tags %}
+                               <div class="single-sidebar-widget post-category-widget">
+									<h4 class="category-title">Post Catgories</h4>
+									<ul class="cat-list">
+										<li>
+											{% for key,value in cat_dict.items %}
+											<a href="#" class="d-flex justify-content-between">
+												<p>{{key}}</p>
+												<p>{{value}}</p>
+											{% endfor %}
+
+											</a>
+										</li>
+
+									</ul>
+								</div>
