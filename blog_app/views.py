@@ -3,12 +3,14 @@ from blog_app.models import Post
 from django.utils import timezone
 
 
-def home_view(request, cat_name=None):
+def home_view(request, **kwargs):
     # To display posts whose publication date is before the current day and status=1#
     filter_post = Post.objects.filter(published_date__lt=timezone.now(), status=1)
     #filter_post = Post.objects.filter(status=1)  # posts that only have status=1
-    if cat_name:
-        filter_post = filter_post.filter(category_list__name=cat_name)
+    if kwargs.get('cat_name') != None:
+        filter_post = filter_post.filter(category_list__name=kwargs['cat_name'])
+    if kwargs.get('author_username') != None:
+        filter_post = filter_post.filter(author__username=kwargs['author_username'])
     context = {'filter_post': filter_post}
     return render(request, 'blog_items/blog-home.html', context)
 
