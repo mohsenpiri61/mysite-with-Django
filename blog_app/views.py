@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from blog_app.models import Post
 from django.utils import timezone
-
+from django.core.paginator import Paginator
 
 def home_view(request, **kwargs):
     # To display posts whose publication date is before the current day and status=1#
@@ -11,8 +11,15 @@ def home_view(request, **kwargs):
         filter_post = filter_post.filter(category_list__name=kwargs['cat_name'])
     if kwargs.get('author_username') != None:
         filter_post = filter_post.filter(author__username=kwargs['author_username'])
+
+    page_init = Paginator(filter_post, 2)  # Show 3 posts per page
+    page_number = request.GET.get("page")
+    filter_post = page_init.get_page(page_number)
     context = {'filter_post': filter_post}
     return render(request, 'blog_items/blog-home.html', context)
+
+
+
 
 
 def single_view(request, pid):  # refer to blog_items folder in template folder
@@ -42,5 +49,15 @@ def single_view(request, pid):  # refer to blog_items folder in template folder
 def test_view(request):
     return render(request, 'test.html')
 
+
+def search_view(request):
+    #print(request.__dict__.keys())
+    filter_post = Post.objects.filter(published_date__lt=timezone.now(), status=1)
+    if request.method == 'GET':
+        #print(request.GET.get('s'))
+        if req := request.GET.get('s'):
+            filter_post = filter_post.filter(content__contains=req)  # warlus
+    context = {'filter_post': filter_post}
+    return render(request, 'blog_items/blog-home.html', context)
 
 
