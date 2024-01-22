@@ -12,7 +12,7 @@ def home_view(request, **kwargs):
     if kwargs.get('author_username') != None:
         filter_post = filter_post.filter(author__username=kwargs['author_username'])
 
-    page_init = Paginator(filter_post, 2)  # Show 3 posts per page
+    page_init = Paginator(filter_post, 3)  # Show 3 posts per page
     page_number = request.GET.get("page")
     filter_post = page_init.get_page(page_number)
     context = {'filter_post': filter_post}
