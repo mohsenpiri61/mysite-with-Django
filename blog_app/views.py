@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from blog_app.models import Post
 from django.utils import timezone
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def home_view(request, **kwargs):
     # To display posts whose publication date is before the current day and status=1#
@@ -12,9 +12,19 @@ def home_view(request, **kwargs):
     if kwargs.get('author_username') != None:
         filter_post = filter_post.filter(author__username=kwargs['author_username'])
 
-    page_init = Paginator(filter_post, 3)  # Show 3 posts per page
-    page_number = request.GET.get("page")
-    filter_post = page_init.get_page(page_number)
+    page_init = Paginator(filter_post, 3)  # creating a paginator object, Show 3 posts per page
+
+    try:
+        page_number = request.GET.get("page")          # getting the desired page number from url
+        filter_post = page_init.get_page(page_number)  # returns the desired page object
+    except PageNotAnInteger:
+        # if page_number is not an integer then assign the first page
+        filter_post = page_init.page(1)
+    except EmptyPage:
+        # if page is empty then return last page
+        filter_post = page_init.page(page_init.num_pages)
+
+
     context = {'filter_post': filter_post}
     return render(request, 'blog_items/blog-home.html', context)
 
