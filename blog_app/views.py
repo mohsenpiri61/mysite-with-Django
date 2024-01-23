@@ -6,14 +6,14 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def home_view(request, **kwargs):
     # To display posts whose publication date is before the current day and status=1#
     filter_post = Post.objects.filter(published_date__lt=timezone.now(), status=1)
-    #filter_post = Post.objects.filter(status=1)  # posts that only have status=1
+
     if kwargs.get('cat_name') != None:
         filter_post = filter_post.filter(category_list__name=kwargs['cat_name'])
     if kwargs.get('author_username') != None:
         filter_post = filter_post.filter(author__username=kwargs['author_username'])
 
-    page_init = Paginator(filter_post, 3)  # creating a paginator object, Show 3 posts per page
-
+    page_init = Paginator(filter_post, 2)  # creating a paginator object, Show 3 posts per page
+    print(page_init.object_list)
     try:
         page_number = request.GET.get("page")          # getting the desired page number from url
         filter_post = page_init.get_page(page_number)  # returns the desired page object
@@ -23,8 +23,6 @@ def home_view(request, **kwargs):
     except EmptyPage:
         # if page is empty then return last page
         filter_post = page_init.page(page_init.num_pages)
-
-
     context = {'filter_post': filter_post}
     return render(request, 'blog_items/blog-home.html', context)
 

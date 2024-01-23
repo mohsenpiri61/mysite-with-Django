@@ -62,7 +62,7 @@
 										<div class="thumb">
 
 												{% if prev_obj %}
-											<a href="#"><img class="img-fluid" src="img/blog/prev.jpg" alt=""></a>
+											<a href="{% url 'blog_show:single_blog' pid=prev_obj.id %}"><img class="img-fluid" src="{{prev_obj.image.url}}" alt=""></a>
 
 							<!--	<a href="{% url 'blog_show:single_blog' pid=prev_obj.id %}"><img class="img-fluid" src="{{prev_obj.image.url}}" alt=""></a>  -->
 
@@ -92,7 +92,7 @@
 											<a href="#"><span class="lnr text-white lnr-arrow-right"></span></a>
 										</div>
 										<div class="thumb">
-											<a href="#"><img class="img-fluid" src="img/blog/next.jpg" alt=""></a>
+											<a href="{% url 'blog_show:single_blog' pid=next_obj.id %}"><img class="img-fluid" src="{{next_obj.image.url}}" alt=""></a>
 
 							<!--	<a href="{% url 'blog_show:single_blog' pid=next_obj.id %}"><img class="img-fluid" src=" {{next_obj.image.url}}" alt=""></a>  -->
 
