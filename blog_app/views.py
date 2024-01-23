@@ -12,7 +12,7 @@ def home_view(request, **kwargs):
     if kwargs.get('author_username') != None:
         filter_post = filter_post.filter(author__username=kwargs['author_username'])
 
-    page_init = Paginator(filter_post, 2)  # creating a paginator object, Show 3 posts per page
+    page_init = Paginator(filter_post, 4)  # creating a paginator object, Show 3 posts per page
     print(page_init.object_list)
     try:
         page_number = request.GET.get("page")          # getting the desired page number from url
@@ -36,12 +36,14 @@ def single_view(request, pid):  # refer to blog_items folder in template folder
     post_obj.save()
     filter_post = Post.objects.filter(published_date__lt=timezone.now(), status=1)
     post_ids = [post.id for post in filter_post]
+    print(post_ids)
     pid_index = post_ids.index(pid)
+    print(pid_index)
     if pid_index == 0:
         next_id = post_ids[pid_index+1]
         next_obj = Post.objects.get(id=next_id)
         prev_obj = None
-    elif pid_index == post_ids.index(len(post_ids)-1):
+    elif pid_index == post_ids.index(post_ids[-1]):
         prev_id = post_ids[pid_index-1]
         prev_obj = Post.objects.get(id=prev_id)
         next_obj = None
