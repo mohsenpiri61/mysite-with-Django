@@ -11,6 +11,5 @@ urlpatterns = [
     path('author/<str:author_username>', home_view, name='author_pubs'),
     path('search/', search_view, name='search_index'),
     path('test', test_view)
-    #path('post/<int:pid>', urlpara_view )
 
 ]

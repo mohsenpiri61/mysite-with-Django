@@ -12,11 +12,13 @@ def home_view(request, **kwargs):
     if kwargs.get('author_username') != None:
         filter_post = filter_post.filter(author__username=kwargs['author_username'])
 
-    page_init = Paginator(filter_post, 4)  # creating a paginator object, Show 3 posts per page
-    print(page_init.object_list)
+    page_init = Paginator(filter_post, 2)  # creating a paginator object, Show  ... posts per page
+    page_number = request.GET.get('page')
+
     try:
-        page_number = request.GET.get("page")          # getting the desired page number from url
-        filter_post = page_init.get_page(page_number)  # returns the desired page object
+        # getting the desired page number from url
+        filter_post = page_init.get_page(page_number)
+        print(filter_post.object_list)
     except PageNotAnInteger:
         # if page_number is not an integer then assign the first page
         filter_post = page_init.page(1)
@@ -27,35 +29,39 @@ def home_view(request, **kwargs):
     return render(request, 'blog_items/blog-home.html', context)
 
 
-
-
-
-def single_view(request, pid):  # refer to blog_items folder in template folder
+def single_view(request, pid):
     post_obj = get_object_or_404(Post, id=pid, status=1, published_date__lt=timezone.now())
     post_obj.counted_views = post_obj.counted_views + 1
     post_obj.save()
     filter_post = Post.objects.filter(published_date__lt=timezone.now(), status=1)
     post_ids = [post.id for post in filter_post]
-    print(post_ids)
+
     pid_index = post_ids.index(pid)
-    print(pid_index)
+
     if pid_index == 0:
         next_id = post_ids[pid_index+1]
-        next_obj = Post.objects.get(id=next_id)
-        prev_obj = None
+        next_post = Post.objects.get(id=next_id)
+        prev_post = None
     elif pid_index == post_ids.index(post_ids[-1]):
         prev_id = post_ids[pid_index-1]
-        prev_obj = Post.objects.get(id=prev_id)
-        next_obj = None
+        prev_post = Post.objects.get(id=prev_id)
+        next_post = None
     else:
         next_id = post_ids[pid_index+1]
-        next_obj = Post.objects.get(id=next_id)
+        next_post = Post.objects.get(id=next_id)
         prev_id = post_ids[pid_index - 1]
-        prev_obj = Post.objects.get(id=prev_id)
-    context = {'post_obj': post_obj, 'next_obj': next_obj, 'prev_obj': prev_obj}
+        prev_post = Post.objects.get(id=prev_id)
+    context = {'post_obj': post_obj, 'next_post': next_post, 'prev_post': prev_post}
     return render(request, 'blog_items/blog-single.html', context)
-
-
+'''
+we can use this code and filter based on other fields: published_date, created_date, ...
+def single2_view(requests, pid):
+    post = get_object_or_404(Post, pk=pid, status=1, published_date__lte=timezone.now())
+    next_post = Post.objects.filter(status=1, published_date__lte=timezone.now(), id__gt=post.id).first()
+    prev_post = Post.objects.filter(status=1, published_date__lte=timezone.now(), id__lt=post.id).last()
+    context = {'post': post, 'prev_post': prev_post, 'next_post': next_post}
+    return render(requests, 'blog_items/blog-single.html', context)
+'''
 def test_view(request):
     return render(request, 'test.html')
 
@@ -67,6 +73,7 @@ def search_view(request):
         #print(request.GET.get('s'))
         if req := request.GET.get('s'):
             filter_post = filter_post.filter(content__contains=req)  # warlus
+
     context = {'filter_post': filter_post}
     return render(request, 'blog_items/blog-home.html', context)
 
