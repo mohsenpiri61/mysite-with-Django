@@ -22,14 +22,14 @@ def snippet(value, count):
 
 
 @register.inclusion_tag('popular-post-view.html')
-def show_popularposts():
+def show_latest_posts():
     post_obj = Post.objects.filter(status=1).order_by('-published_date')[:3]
     return {'post_obj': post_obj}
 
 
 @register.inclusion_tag('blog_items/blog-latest-post.html')
-def latestposts(arg=3):
-    post_obj = Post.objects.filter(status=1).order_by('published_date')[:arg]
+def most_visited_posts(arg=3):
+    post_obj = Post.objects.filter(status=1).order_by('-counted_views')[:arg]
     return {'post_obj': post_obj}
 
 
@@ -41,3 +41,9 @@ def cat_of_posts():
     for cat_name in category_obj:
         cat_dict[cat_name] = post_obj.filter(category_list=cat_name).count()
     return {'cat_dict': cat_dict}
+
+
+@register.inclusion_tag('latest-post.html')
+def latest_posts():
+    post_obj = Post.objects.filter(status=1).order_by('-published_date')[:6]
+    return {'post_obj': post_obj}

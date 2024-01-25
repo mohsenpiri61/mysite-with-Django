@@ -9,7 +9,7 @@
         <h2>Testing Page</h2>
         <p>Total of posts published till date is :{% cal_post as tp %}</p>
          <p>{{tp}}</p>
-         <!--   ######################  -->
+         <!--   refer to show_post()  -->
             {% posts as postschema %}
             {% for item in postschema %}
                  <p>{{item}}</p>
@@ -19,7 +19,7 @@
                  <p>{{item.content|snippet:100}}</p>
             {% endfor %}
          <!--   ######################    -->
-            {% show_popularposts %}
+            {% show_latest_posts %}
 </body>
 </html>
 
