@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+        <form action="{% url 'form-init' %}" method="post">
+            {% csrf_token %}
+            <label> Your name: </label>
+            <input type="text" name="your_name"><br>
+            <label> Your email: </label>
+            <input type="email" name="email_form"><br>
+            <label> Your subject: </label>
+            <input type="text" name="subject_form"><br>
+            <label> Your message: </label>
+            <input type="text" name="message_form"><br>
+           <button type="Submit" >OK</button>
+        </form>
+</body>
+</html>

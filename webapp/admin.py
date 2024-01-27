@@ -1,5 +1,5 @@
 from django.contrib import admin
-from webapp.models import Contact
+from webapp.models import Contact, Newsletter
 
 
 class ContactAdmin(admin.ModelAdmin):
@@ -9,5 +9,5 @@ class ContactAdmin(admin.ModelAdmin):
     search_fields = ('name', 'message')
 
 
-
 admin.site.register(Contact, ContactAdmin)
+admin.site.register(Newsletter)

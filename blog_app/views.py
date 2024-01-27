@@ -63,7 +63,7 @@ def single2_view(requests, pid):
     return render(requests, 'blog_items/blog-single.html', context)
 '''
 def test_view(request):
-    return render(request, 'test.html')
+    return render(request, 'blog_items/simple_tag_test.html')
 
 
 def search_view(request):

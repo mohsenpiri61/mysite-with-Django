@@ -12,4 +12,5 @@ urlpatterns = [
     path('search/', search_view, name='search_index'),
     path('test', test_view)
 
+
 ]
