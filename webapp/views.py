@@ -112,6 +112,10 @@ def contact_view(request):
         form_data.message = message
         form_data.subject = subject
         form_data.save()
+        try:
+            messages.add_message(request, messages.SUCCESS, 'Your ticket submitted successfully.')
+        except:
+            messages.add_message(request, messages.ERROR, "Your ticket didn't submitted .")
     else:
         form_data = Contact()
 
