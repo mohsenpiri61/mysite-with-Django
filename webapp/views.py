@@ -2,6 +2,9 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from webapp.models import Contact
 from webapp.forms import NameForm, ContactForm, NewsletterForm
+from django.contrib import messages
+
+
 def home_text(request):
     return HttpResponse('<h1> You are in Home page </h1>')
 
@@ -14,25 +17,29 @@ def contact_text(request):
     return JsonResponse({'name': 'mohsen', 'age': 41})
 
 
-def index_view(request): # refer to templates folder
+def index_view(request):  # refer to templates folder
     return render(request, 'index.html')
 
 
-def about_view(request): # refer to templates folder
+def about_view(request):  # refer to templates folder
     return render(request, 'about.html')
 
 
+'''
 def contact_view(request):  # refer to templates folder
     if request.method == 'POST':
         form_data = ContactForm(request.POST)
         if form_data.is_valid():
             form_data.save()
-
+            messages.add_message(request, messages.SUCCESS, 'Your ticket submitted successfully.')
+        else:
+            messages.add_message(request, messages.ERROR, "Your ticket didn't submitted .")
     else:
         form_data = ContactForm()
 
     return render(request, 'contact.html')  # we don't need to send {'form_data': form_data} into contact.html
 
+'''
 
 
 def newsletter_view(request):
@@ -46,9 +53,7 @@ def newsletter_view(request):
         return HttpResponseRedirect('/')
 
 
-
-
-def elements_view(request): # refer to templates folder
+def elements_view(request):  # refer to templates folder
     return render(request, 'elements.html')
 
 
@@ -70,7 +75,6 @@ def form_view(request):
 
 
 def form2_view(request):
-
     if request.method == 'POST':
         form_data = NameForm(request.POST)
         if form_data.is_valid():
@@ -85,7 +89,6 @@ def form2_view(request):
 
 
 def form3_view(request):
-
     if request.method == 'POST':
         form_data = ContactForm(request.POST)
         if form_data.is_valid():
@@ -97,3 +100,19 @@ def form3_view(request):
     return render(request, 'form3-test.html', {'form_data': form_data})
 
 
+def contact_view(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        form_data = Contact()
+        form_data.name = 'anonymous'
+        form_data.email = email
+        form_data.message = message
+        form_data.subject = subject
+        form_data.save()
+    else:
+        form_data = Contact()
+
+    return render(request, 'contact.html')
