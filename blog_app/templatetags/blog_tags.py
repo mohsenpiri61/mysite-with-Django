@@ -1,5 +1,6 @@
 from django import template
 from blog_app.models import Post, Category
+from django.utils import timezone
 
 register = template.Library()
 
@@ -29,13 +30,13 @@ def show_latest_posts():
 
 @register.inclusion_tag('blog_items/blog-latest-post.html')
 def most_visited_posts(arg=3):
-    post_obj = Post.objects.filter(status=1).order_by('-counted_views')[:arg]
+    post_obj = Post.objects.filter(published_date__lt=timezone.now(), status=1).order_by('-counted_views')[:arg]
     return {'post_obj': post_obj}
 
 
 @register.inclusion_tag('blog_items/blog-post-categories.html')
 def cat_of_posts():
-    post_obj = Post.objects.filter(status=1)
+    post_obj = Post.objects.filter(published_date__lt=timezone.now(), status=1)
     category_obj = Category.objects.all()
     cat_dict = {}
     for cat_name in category_obj:
@@ -45,5 +46,5 @@ def cat_of_posts():
 
 @register.inclusion_tag('latest-post.html')
 def latest_posts():
-    post_obj = Post.objects.filter(status=1).order_by('-published_date')[:6]
+    post_obj = Post.objects.filter(published_date__lt=timezone.now(), status=1).order_by('-published_date')[:6]
     return {'post_obj': post_obj}
