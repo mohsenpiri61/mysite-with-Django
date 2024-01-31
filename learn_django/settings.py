@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'webapp',
     'blog_app'
 ]
-SITE_ID = 3
+SITE_ID = 4
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
