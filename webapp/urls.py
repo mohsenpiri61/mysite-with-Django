@@ -5,7 +5,7 @@ from webapp.sitemaps import StaticViewSitemap
 from blog_app.sitemaps import BlogSitemap
 
 
-sitemaps = {"static": StaticViewSitemap, 'blog': BlogSitemap}
+sitemaps = {"static": StaticViewSitemap, 'blog_app': BlogSitemap,}
 
 urlpatterns = [
     path('home_web', home_text),
