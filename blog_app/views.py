@@ -11,6 +11,8 @@ def home_view(request, **kwargs):
         filter_post = filter_post.filter(category_list__name=kwargs['cat_name'])
     if kwargs.get('author_username') != None:
         filter_post = filter_post.filter(author__username=kwargs['author_username'])
+    if kwargs.get('tag_name') != None:
+        filter_post = filter_post.filter(tags__name__in=[kwargs['tag_name']])
 
     page_init = Paginator(filter_post, 2)  # creating a paginator object, Show  ... posts per page
     page_number = request.GET.get('page')

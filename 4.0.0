@@ -1,0 +1,6 @@
+Collecting django-robots
+  Downloading django_robots-6.1-py3-none-any.whl.metadata (2.9 kB)
+Downloading django_robots-6.1-py3-none-any.whl (59 kB)
+   ---------------------------------------- 59.3/59.3 kB 392.5 kB/s eta 0:00:00
+Installing collected packages: django-robots
+Successfully installed django-robots-6.1
