@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from blog_app.models import Post
+from blog_app.models import Post, Comment
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -35,11 +35,12 @@ def single_view(request, pid):
     post_obj = get_object_or_404(Post, id=pid, status=1, published_date__lt=timezone.now())
     post_obj.counted_views = post_obj.counted_views + 1
     post_obj.save()
+
+    comments = Comment.objects.filter(intended_post=post_obj.id, approved=True)
+
     filter_post = Post.objects.filter(published_date__lt=timezone.now(), status=1)
     post_ids = [post.id for post in filter_post]
-
     pid_index = post_ids.index(pid)
-
     if pid_index == 0:
         next_id = post_ids[pid_index+1]
         next_post = Post.objects.get(id=next_id)
@@ -53,7 +54,7 @@ def single_view(request, pid):
         next_post = Post.objects.get(id=next_id)
         prev_id = post_ids[pid_index - 1]
         prev_post = Post.objects.get(id=prev_id)
-    context = {'post_obj': post_obj, 'next_post': next_post, 'prev_post': prev_post}
+    context = {'post_obj': post_obj, 'next_post': next_post, 'prev_post': prev_post, 'comments': comments}
     return render(request, 'blog_items/blog-single.html', context)
 '''
 we can use this code and filter based on other fields: published_date, created_date, ...
