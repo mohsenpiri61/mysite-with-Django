@@ -26,7 +26,7 @@ def about_view(request):
 
 
 '''
-def contact_view(request):  # refer to templates folder
+def contact_view(request):  
     if request.method == 'POST':
         form_data = ContactForm(request.POST)
         if form_data.is_valid():

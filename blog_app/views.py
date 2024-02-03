@@ -2,6 +2,9 @@ from django.shortcuts import render, get_object_or_404
 from blog_app.models import Post, Comment
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from blog_app.forms import CommentForm
+from django.contrib import messages
+
 
 def home_view(request, **kwargs):
     # To display posts whose publication date is before the current day and status=1#
@@ -32,6 +35,13 @@ def home_view(request, **kwargs):
 
 
 def single_view(request, pid):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, 'Your comment submitted successfully.')
+        else:
+            messages.add_message(request, messages.ERROR, "Your comment didn't submitted .")
     post_obj = get_object_or_404(Post, id=pid, status=1, published_date__lt=timezone.now())
     post_obj.counted_views = post_obj.counted_views + 1
     post_obj.save()
@@ -42,20 +52,22 @@ def single_view(request, pid):
     post_ids = [post.id for post in filter_post]
     pid_index = post_ids.index(pid)
     if pid_index == 0:
-        next_id = post_ids[pid_index+1]
+        next_id = post_ids[pid_index + 1]
         next_post = Post.objects.get(id=next_id)
         prev_post = None
     elif pid_index == post_ids.index(post_ids[-1]):
-        prev_id = post_ids[pid_index-1]
+        prev_id = post_ids[pid_index - 1]
         prev_post = Post.objects.get(id=prev_id)
         next_post = None
     else:
-        next_id = post_ids[pid_index+1]
+        next_id = post_ids[pid_index + 1]
         next_post = Post.objects.get(id=next_id)
         prev_id = post_ids[pid_index - 1]
         prev_post = Post.objects.get(id=prev_id)
     context = {'post_obj': post_obj, 'next_post': next_post, 'prev_post': prev_post, 'comments': comments}
     return render(request, 'blog_items/blog-single.html', context)
+
+
 '''
 we can use this code and filter based on other fields: published_date, created_date, ...
 def single2_view(requests, pid):
@@ -65,19 +77,19 @@ def single2_view(requests, pid):
     context = {'post': post, 'prev_post': prev_post, 'next_post': next_post}
     return render(requests, 'blog_items/blog-single.html', context)
 '''
+
+
 def test_view(request):
     return render(request, 'blog_items/simple_tag_test.html')
 
 
 def search_view(request):
-    #print(request.__dict__.keys())
+    # print(request.__dict__.keys())
     filter_post = Post.objects.filter(published_date__lt=timezone.now(), status=1)
     if request.method == 'GET':
-        #print(request.GET.get('s'))
+        # print(request.GET.get('s'))
         if req := request.GET.get('s'):
             filter_post = filter_post.filter(content__contains=req)  # warlus
 
     context = {'filter_post': filter_post}
     return render(request, 'blog_items/blog-home.html', context)
-
-
