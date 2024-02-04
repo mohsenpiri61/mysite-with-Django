@@ -134,8 +134,9 @@
 
 							<div class="comment-form">
 								<h4>Leave a Comment</h4>
-								<form method="post" action="{% url 'blog_show:single_blog pid=post_obj.id %}" >
+								<form method="post" action="{% url 'blog_show:single_blog' pid=post_obj.id %}" >
 									{% csrf_token %}
+									<input type="hidden" name="intended_post" value={{post_obj.id}}>
 									<div class="form-group form-inline">
 									  <div class="form-group col-lg-6 col-md-12 name">
 									    <input type="text" class="form-control" name="name" placeholder="Enter Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'">

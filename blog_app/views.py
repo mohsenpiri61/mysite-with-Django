@@ -35,19 +35,23 @@ def home_view(request, **kwargs):
 
 
 def single_view(request, pid):
+    # Filling out the comment Section
     if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            form.save()
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment_form.save()
             messages.add_message(request, messages.SUCCESS, 'Your comment submitted successfully.')
         else:
             messages.add_message(request, messages.ERROR, "Your comment didn't submitted .")
+    else:
+        comment_form = CommentForm()
+    # showing each post Section
     post_obj = get_object_or_404(Post, id=pid, status=1, published_date__lt=timezone.now())
     post_obj.counted_views = post_obj.counted_views + 1
     post_obj.save()
-
+    # showing registered comment Section
     comments = Comment.objects.filter(intended_post=post_obj.id, approved=True)
-
+    # Next and Previous Section
     filter_post = Post.objects.filter(published_date__lt=timezone.now(), status=1)
     post_ids = [post.id for post in filter_post]
     pid_index = post_ids.index(pid)
@@ -64,7 +68,9 @@ def single_view(request, pid):
         next_post = Post.objects.get(id=next_id)
         prev_id = post_ids[pid_index - 1]
         prev_post = Post.objects.get(id=prev_id)
+    # context Section
     context = {'post_obj': post_obj, 'next_post': next_post, 'prev_post': prev_post, 'comments': comments}
+            
     return render(request, 'blog_items/blog-single.html', context)
 
 

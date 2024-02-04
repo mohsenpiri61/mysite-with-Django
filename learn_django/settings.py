@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'taggit',
     'django_summernote',
-    #'captcha',
 
+    'user_account',
     'webapp',
     'blog_app'
 ]
