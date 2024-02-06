@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+
 
 
 def login_view(request):
@@ -23,5 +24,28 @@ def login_view(request):
     return render(request, 'user_template/login.html', {'form': form})
 
 
+def logout_view(request):
+    logout(request)
+    return redirect('/')  # we can refer to every page we want such: '/users/login'
+
+
 def signup_view(request):
-    return render(request, 'user_template/signup.html')
+    if request.user.is_authenticated:
+        return redirect('/')
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            '''
+            # if write below codes, after sign up don't need to login  
+            user_name = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=user_name, password=password)
+            login(request, user)
+            '''
+            return redirect('/')
+
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'user_template/signup.html', {'form': form})

@@ -1,11 +1,13 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from blog_app.models import Post, Comment
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from blog_app.forms import CommentForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
+# @login_required(login_url="/users/login")
 def home_view(request, **kwargs):
     # To display posts whose publication date is before the current day and status=1#
     filter_post = Post.objects.filter(published_date__lt=timezone.now(), status=1)
@@ -49,29 +51,54 @@ def single_view(request, pid):
     post_obj = get_object_or_404(Post, id=pid, status=1, published_date__lt=timezone.now())
     post_obj.counted_views = post_obj.counted_views + 1
     post_obj.save()
-    # showing registered comment Section
-    comments = Comment.objects.filter(intended_post=post_obj.id, approved=True)
-    # Next and Previous Section
-    filter_post = Post.objects.filter(published_date__lt=timezone.now(), status=1)
-    post_ids = [post.id for post in filter_post]
-    pid_index = post_ids.index(pid)
-    if pid_index == 0:
-        next_id = post_ids[pid_index + 1]
-        next_post = Post.objects.get(id=next_id)
-        prev_post = None
-    elif pid_index == post_ids.index(post_ids[-1]):
-        prev_id = post_ids[pid_index - 1]
-        prev_post = Post.objects.get(id=prev_id)
-        next_post = None
+    # checking login_needed for post
+    print(request.user.is_authenticated)
+    if not post_obj.login_needed:  # it means: if post_obj.login_needed is not True
+        # showing registered comment Section
+        comments = Comment.objects.filter(intended_post=post_obj.id, approved=True)
+        # Next and Previous Section
+        filter_post = Post.objects.filter(published_date__lt=timezone.now(), status=1)
+        post_ids = [post.id for post in filter_post]
+        pid_index = post_ids.index(pid)
+        if pid_index == 0:
+            next_id = post_ids[pid_index + 1]
+            next_post = Post.objects.get(id=next_id)
+            prev_post = None
+        elif pid_index == post_ids.index(post_ids[-1]):
+            prev_id = post_ids[pid_index - 1]
+            prev_post = Post.objects.get(id=prev_id)
+            next_post = None
+        else:
+            next_id = post_ids[pid_index + 1]
+            next_post = Post.objects.get(id=next_id)
+            prev_id = post_ids[pid_index - 1]
+            prev_post = Post.objects.get(id=prev_id)
+        # context Section
+        context = {'post_obj': post_obj, 'next_post': next_post, 'prev_post': prev_post, 'comments': comments}
+        return render(request, 'blog_items/blog-single.html', context)
+    elif post_obj.login_needed and request.user.is_authenticated:
+        comments = Comment.objects.filter(intended_post=post_obj.id, approved=True)
+        filter_post = Post.objects.filter(published_date__lt=timezone.now(), status=1)
+        post_ids = [post.id for post in filter_post]
+        pid_index = post_ids.index(pid)
+        if pid_index == 0:
+            next_id = post_ids[pid_index + 1]
+            next_post = Post.objects.get(id=next_id)
+            prev_post = None
+        elif pid_index == post_ids.index(post_ids[-1]):
+            prev_id = post_ids[pid_index - 1]
+            prev_post = Post.objects.get(id=prev_id)
+            next_post = None
+        else:
+            next_id = post_ids[pid_index + 1]
+            next_post = Post.objects.get(id=next_id)
+            prev_id = post_ids[pid_index - 1]
+            prev_post = Post.objects.get(id=prev_id)
+        # context Section
+        context = {'post_obj': post_obj, 'next_post': next_post, 'prev_post': prev_post, 'comments': comments}
+        return render(request, 'blog_items/blog-single.html', context)
     else:
-        next_id = post_ids[pid_index + 1]
-        next_post = Post.objects.get(id=next_id)
-        prev_id = post_ids[pid_index - 1]
-        prev_post = Post.objects.get(id=prev_id)
-    # context Section
-    context = {'post_obj': post_obj, 'next_post': next_post, 'prev_post': prev_post, 'comments': comments}
-            
-    return render(request, 'blog_items/blog-single.html', context)
+        return redirect('/users/login')
 
 
 '''
