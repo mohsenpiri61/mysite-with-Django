@@ -4,6 +4,8 @@ from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from blog_app.forms import CommentForm
 from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 
@@ -52,7 +54,7 @@ def single_view(request, pid):
     post_obj.counted_views = post_obj.counted_views + 1
     post_obj.save()
     # checking login_needed for post
-    print(request.user.is_authenticated)
+    # print(request.user.is_authenticated)
     if not post_obj.login_needed:  # it means: if post_obj.login_needed is not True
         # showing registered comment Section
         comments = Comment.objects.filter(intended_post=post_obj.id, approved=True)
@@ -76,29 +78,9 @@ def single_view(request, pid):
         # context Section
         context = {'post_obj': post_obj, 'next_post': next_post, 'prev_post': prev_post, 'comments': comments}
         return render(request, 'blog_items/blog-single.html', context)
-    elif post_obj.login_needed and request.user.is_authenticated:
-        comments = Comment.objects.filter(intended_post=post_obj.id, approved=True)
-        filter_post = Post.objects.filter(published_date__lt=timezone.now(), status=1)
-        post_ids = [post.id for post in filter_post]
-        pid_index = post_ids.index(pid)
-        if pid_index == 0:
-            next_id = post_ids[pid_index + 1]
-            next_post = Post.objects.get(id=next_id)
-            prev_post = None
-        elif pid_index == post_ids.index(post_ids[-1]):
-            prev_id = post_ids[pid_index - 1]
-            prev_post = Post.objects.get(id=prev_id)
-            next_post = None
-        else:
-            next_id = post_ids[pid_index + 1]
-            next_post = Post.objects.get(id=next_id)
-            prev_id = post_ids[pid_index - 1]
-            prev_post = Post.objects.get(id=prev_id)
-        # context Section
-        context = {'post_obj': post_obj, 'next_post': next_post, 'prev_post': prev_post, 'comments': comments}
-        return render(request, 'blog_items/blog-single.html', context)
+
     else:
-        return redirect('/users/login')
+        return HttpResponseRedirect(reverse('user_auth:login_page'))
 
 
 '''

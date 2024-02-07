@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-
+from django.http import HttpResponseRedirect
 
 
 def login_view(request):
@@ -18,6 +18,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 return redirect('/')
+
     else:
         form = AuthenticationForm()
 
@@ -49,3 +50,7 @@ def signup_view(request):
         form = UserCreationForm()
 
     return render(request, 'user_template/signup.html', {'form': form})
+
+
+def forgotpass(request):
+    pass
