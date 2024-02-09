@@ -25,21 +25,20 @@ def about_view(request):
     return render(request, 'about.html')
 
 
-'''
-def contact_view(request):  
+def contact_view(request):
     if request.method == 'POST':
         form_data = ContactForm(request.POST)
         if form_data.is_valid():
-            form_data.save()
-            messages.add_message(request, messages.SUCCESS, 'Your ticket submitted successfully.')
+            contact = form_data.save(commit=False)
+            contact.name = 'anonymous'
+            contact.save()
+            messages.add_message(request, messages.SUCCESS, 'save information successfully')
         else:
-            messages.add_message(request, messages.ERROR, "Your ticket didn't submitted .")
-    else:
-        form_data = ContactForm()
+            messages.add_message(request, messages.ERROR, 'save information not successfully')
+    form_data = ContactForm()
+    return render(request, 'contact.html', {'form_data': form_data})  # we don't need to send {'form_data': form_data} into contact.html
 
-    return render(request, 'contact.html')  # we don't need to send {'form_data': form_data} into contact.html
 
-'''
 
 
 def newsletter_view(request):
@@ -99,7 +98,7 @@ def form3_view(request):
 
     return render(request, 'form3-test.html', {'form_data': form_data})
 
-
+'''
 def contact_view(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -120,3 +119,4 @@ def contact_view(request):
         form_data = Contact()
 
     return render(request, 'contact.html')
+'''
