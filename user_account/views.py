@@ -1,28 +1,33 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.http import HttpResponseRedirect
+from django.contrib import auth
+from django.contrib import messages
+from .forms import SignUpForm
 
 
 def login_view(request):
-    if request.user.is_authenticated:
-        return redirect('/')
-    if request.method == 'POST':
-        user_name = request.POST['username']
-        password = request.POST['password']
-        form = AuthenticationForm(request=request, data=request.POST)
-        if form.is_valid():
-            user_name = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(request, username=user_name, password=password)
+    if not request.user.is_authenticated:
+        if request.method == 'POST':
+            user_input = request.POST['username']
+            try:
+                user_name = User.objects.get(email=user_input).username
+            except User.DoesNotExist:
+                user_name = request.POST['username']
+            password = request.POST['password']
+            user = auth.authenticate(username=user_name, password=password)
+
             if user is not None:
-                login(request, user)
+                auth.login(request, user)
+                messages.add_message(request, messages.SUCCESS, 'Login was successful')
                 return redirect('/')
-
+            else:
+                messages.add_message(request, messages.ERROR, 'The user was not found')
+        return render(request, "user_template/login.html")
     else:
-        form = AuthenticationForm()
-
-    return render(request, 'user_template/login.html', {'form': form})
+        return redirect('/')
 
 
 def logout_view(request):
@@ -31,25 +36,17 @@ def logout_view(request):
 
 
 def signup_view(request):
-    if request.user.is_authenticated:
-        return redirect('/')
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            '''
-            # if write below codes, after sign up don't need to login  
-            user_name = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-            user = authenticate(username=user_name, password=password)
-            login(request, user)
-            '''
-            return redirect('/')
-
+    if not request.user.is_authenticated:
+        if request.method == "POST":
+            form = SignUpForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('/')
+        form = SignUpForm()
+        context = {'form': form}
+        return render(request, 'user_template/signup.html', context)
     else:
-        form = UserCreationForm()
-
-    return render(request, 'user_template/signup.html', {'form': form})
+        return redirect('/')
 
 
 def forgotpass(request):
