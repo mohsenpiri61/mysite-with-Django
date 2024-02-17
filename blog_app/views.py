@@ -83,6 +83,7 @@ def single_view(request, pid):
         return HttpResponseRedirect(reverse('user_auth:login_page'))
 
 
+
 '''
 we can use this code and filter based on other fields: published_date, created_date, ...
 def single2_view(requests, pid):

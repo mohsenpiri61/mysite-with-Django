@@ -1,8 +1,6 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.http import HttpResponseRedirect
+from django.contrib.auth import login, logout
 from django.contrib import auth
 from django.contrib import messages
 from .forms import SignUpForm
@@ -36,6 +34,7 @@ def logout_view(request):
 
 
 def signup_view(request):
+
     if not request.user.is_authenticated:
         if request.method == "POST":
             form = SignUpForm(request.POST)
@@ -48,6 +47,3 @@ def signup_view(request):
     else:
         return redirect('/')
 
-
-def forgotpass(request):
-    pass
