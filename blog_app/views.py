@@ -16,8 +16,10 @@ def home_view(request, **kwargs):
 
     if kwargs.get('cat_name') != None:
         filter_post = filter_post.filter(category_list__name=kwargs['cat_name'])
+
     if kwargs.get('author_username') != None:
         filter_post = filter_post.filter(author__username=kwargs['author_username'])
+
     if kwargs.get('tag_name') != None:
         filter_post = filter_post.filter(tags__name__in=[kwargs['tag_name']])
 
@@ -55,7 +57,7 @@ def single_view(request, pid):
     post_obj.save()
     # checking login_needed for post
     # print(request.user.is_authenticated)
-    if not post_obj.login_needed:  # it means: if post_obj.login_needed is not True
+    if not post_obj.login_needed or request.user.is_authenticated:  # it means: if post_obj.login_needed is not True
         # showing registered comment Section
         comments = Comment.objects.filter(intended_post=post_obj.id, approved=True)
         # Next and Previous Section
