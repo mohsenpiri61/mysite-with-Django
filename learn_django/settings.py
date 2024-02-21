@@ -15,16 +15,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-om614tz48)mby5eiq*8g@u7=+=faz)w^mw0*q5t+m@yq8=w878'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -49,8 +40,7 @@ INSTALLED_APPS = [
     'blog_app'
 ]
 
-# site framework
-SITE_ID = 4
+
 
 # robots
 ROBOTS_USE_HOST = True
@@ -58,7 +48,7 @@ ROBOTS_USE_SITEMAP = True
 
 # summernote configs
 SUMMERNOTE_THEME = 'bs4'
-X_FRAME_OPTIONS = "SAMEORIGIN"
+
 SUMMERNOTE_CONFIG = {
     'iframe': True,
     'summernote': {
@@ -112,15 +102,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'learn_django.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -155,12 +137,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
-
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
 
-STATICFILES_DIRS = [BASE_DIR / "statics_asset", ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -179,3 +157,57 @@ EMAIL_HOST_PASSWORD = 'saxf aieo zxhb igiu'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+'''
+# decouple
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
+EMAIL_HOST = config('EMAIL_HOST', default='localhost')
+EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+EMAIL_USE_TLS = CONFIG('EMAIL_USE_TLS', default=True, cast=bool)
+
+
+if config("SSL_SETTING", default=False, cast=bool)""
+    # HSTS setting
+    SECURE_HSTS_SECONDS = 15768000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    # Https setting
+    SESSION_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    CSRF_COOKIE_SECURE = True
+    # more security setting
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    X_FRAME_OPTIONS = 'SAMEORIGIN'
+    SECURE_REFERRER_POLICY = 'strict-origin'
+    USE_X_FORWARDED_HOST = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+
+    SESSION_COOKIE_SAMESITE = 'Strict'
+    CSRF_COOKIE_HTTPONLY = True
+    CSRF_USE_SESSIONS = True    
+
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': config(DB_ENGINE, default='django.db.backends.postgresql'),
+            'NAME': '< database_name >',
+            'USER': '<database_username>',
+            'PASSWORD': '<password>',
+            'HOST': '<database_hostname_or_ip>',
+            'PORT': 5432,
+        }
+    }
+
+'''
