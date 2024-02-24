@@ -147,15 +147,12 @@
 
                    </div>
                    <div class="col-lg-4 sidebar-widgets">
-                      <div class="widget-wrap">
+                     <div class="widget-wrap">
 
-                         {% include 'blog_items/blog-search.html' %}
-
-                      </div>
+                            {% include 'blog_items/blog-search.html' %}
                             {% include 'blog_items/blog-writer.html' %}
-
                             {% most_visited_posts 4 %}
-
+                     </div>
                             {% cat_of_posts %}
 
                          <div class="single-sidebar-widget ads-widget">
