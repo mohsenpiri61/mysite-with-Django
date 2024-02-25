@@ -85,7 +85,6 @@ def single_view(request, pid):
         return HttpResponseRedirect(reverse('user_auth:login_page'))
 
 
-
 '''
 we can use this code and filter based on other fields: published_date, created_date, ...
 def single2_view(requests, pid):
@@ -106,8 +105,9 @@ def search_view(request):
     filter_post = Post.objects.filter(published_date__lt=timezone.now(), status=1)
     if request.method == 'GET':
         # print(request.GET.get('s'))
-        if req := request.GET.get('s'):
-            filter_post = filter_post.filter(content__contains=req)  # warlus
-
+        req = request.GET.get('s')
+        if req:
+            filter_post = filter_post.filter(content__contains=req)
+        # we can use warlus instead of lines 109, 110 as below:  if req := request.GET.get('s'):
     context = {'filter_post': filter_post}
     return render(request, 'blog_items/blog-home.html', context)

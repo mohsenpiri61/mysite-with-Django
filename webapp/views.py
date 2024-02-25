@@ -36,9 +36,8 @@ def contact_view(request):
         else:
             messages.add_message(request, messages.ERROR, 'save information not successfully')
     form_data = ContactForm()
-    return render(request, 'contact.html', {'form_data': form_data})  # we don't need to send {'form_data': form_data} into contact.html
-
-
+    return render(request, 'contact.html',
+                  {'form_data': form_data})  # we don't need to send {'form_data': form_data} into contact.html
 
 
 def newsletter_view(request):
@@ -97,6 +96,7 @@ def form3_view(request):
         form_data = ContactForm()
 
     return render(request, 'form3-test.html', {'form_data': form_data})
+
 
 '''
 def contact_view(request):
