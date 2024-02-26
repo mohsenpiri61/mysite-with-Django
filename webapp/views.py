@@ -1,12 +1,12 @@
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from webapp.models import Contact
 from webapp.forms import NameForm, ContactForm, NewsletterForm
 from django.contrib import messages
 
 
-def home_text(request):
-    return HttpResponse('<h1> You are in Home page </h1>')
+def NoRes_view(request):
+    return render(request, 'NotResponse.html')
 
 
 def about_text(request):

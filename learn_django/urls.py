@@ -15,16 +15,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.sitemaps.views import sitemap
 from webapp.sitemaps import StaticViewSitemap
 from blog_app.sitemaps import BlogSitemap
-
+from webapp.views import NoRes_view
 sitemaps = {"static": StaticViewSitemap, 'blog_app': BlogSitemap, }
 
 urlpatterns = [
+    #re_path(r"^(?!NotResponse)", NoRes_view),
     path('admin/', admin.site.urls),
     path('', include('webapp.urls')),  # we can use 'webapp/' instead of ''
     path('blog_app/', include('blog_app.urls')),
@@ -36,7 +37,14 @@ urlpatterns = [
     path('robots.txt', include('robots.urls')),
     path("__debug__/", include("debug_toolbar.urls")),
     path('summernote/', include('django_summernote.urls')),
+
     #path('captcha/', include('captcha.urls'))
+    # path('NotResponse', NoRes_view),  # for use, active 'learn_django.middleware.RedirectMiddleware' in settings
+
+    # whatever urls you might have in here
+    # make sure the 'catch-all' url is placed last
+
+
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
