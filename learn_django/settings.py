@@ -76,7 +76,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    # 'learn_django.middleware.RedirectMiddleware',
+    #'learn_django.middleware.RedirectMiddleware',
 ]
 
 ROOT_URLCONF = 'learn_django.urls'
