@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'taggit',
     'django_summernote',
+    'compressor',
 
     'user_account',
     'webapp',
@@ -67,6 +68,22 @@ SUMMERNOTE_CONFIG = {
 # captcha admin setting
 
 
+COMPRESS_ENABLED = True
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    'compressor.filters.cssmin.CSSMinFilter',
+]
+COMPRESS_JS_FILTERS = [
+    'compressor.filters.jsmin.JSMinFilter',
+]
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -76,7 +93,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    #'learn_django.middleware.RedirectMiddleware',
+    # 'learn_django.middleware.RedirectMiddleware',
 ]
 
 ROOT_URLCONF = 'learn_django.urls'

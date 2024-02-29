@@ -25,7 +25,7 @@ from webapp.views import NoRes_view
 sitemaps = {"static": StaticViewSitemap, 'blog_app': BlogSitemap, }
 
 urlpatterns = [
-    re_path(r"^(?!NotResponse)", NoRes_view),
+    #re_path(r"^(?!NotResponse)", NoRes_view),
     path('admin/', admin.site.urls),
     path('', include('webapp.urls')),  # we can use 'webapp/' instead of ''
     path('blog_app/', include('blog_app.urls')),
