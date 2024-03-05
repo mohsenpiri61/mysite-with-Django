@@ -62,7 +62,6 @@ def single_view(request, pid):
         # showing registered comment Section
         comments = Comment.objects.filter(intended_post=post_obj.id, approved=True)
         # Next and Previous Section
-        
         post_ids = [post.id for post in all_posts]
         pid_index = post_ids.index(pid)
         if pid_index == 0:
