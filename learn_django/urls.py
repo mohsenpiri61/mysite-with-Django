@@ -22,6 +22,9 @@ from django.contrib.sitemaps.views import sitemap
 from webapp.sitemaps import StaticViewSitemap
 from blog_app.sitemaps import BlogSitemap
 from webapp.views import NoRes_view
+
+
+
 sitemaps = {"static": StaticViewSitemap, 'blog_app': BlogSitemap, }
 
 urlpatterns = [

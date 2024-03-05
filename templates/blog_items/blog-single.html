@@ -37,7 +37,7 @@
 										{% endfor%}
 									</ul>
 									<div class="user-details row">
-										<p class="user-name col-lg-12 col-md-12 col-6"><a href="#">{{post_obj.author.get_full_name}}</a> <span class="lnr lnr-user"></span></p>
+										<p class="user-name col-lg-12 col-md-12 col-6"><a href="{% url 'blog_show:author_pubs' author_username=post_obj.author.username %}">{{post_obj.author.get_full_name}}</a> <span class="lnr lnr-user"></span></p>
 										<p class="date col-lg-12 col-md-12 col-6"><a>{{post_obj.published_date|date:"d M Y"}}</a> <span class="lnr lnr-calendar-full"></span></p>
 										<p class="view col-lg-12 col-md-12 col-6"><a href="#">{{post_obj.counted_views}} Views</a> <span class="lnr lnr-eye"></span></p>
 										<p class="comments col-lg-12 col-md-12 col-6"><a href="#">{{comments|length}} Comments</a> <span class="lnr lnr-bubble"></span></p>

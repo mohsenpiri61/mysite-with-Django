@@ -11,7 +11,6 @@ urlpatterns = [
     path('about', about_view, name='about'),
     path('contact', contact_view, name='contact'),
     path('elements', elements_view, name='elements'),
-    path('contact', contact_view, name='contact'),
     path('forms', form_view, name='form-init'),
     path('forms2', form2_view, name='form2-init'),
     path('forms3', form3_view, name='form3-init'),

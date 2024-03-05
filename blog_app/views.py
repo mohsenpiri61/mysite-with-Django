@@ -49,10 +49,11 @@ def single_view(request, pid):
             messages.add_message(request, messages.SUCCESS, 'Your comment submitted successfully.')
         else:
             messages.add_message(request, messages.ERROR, "Your comment didn't submitted .")
-    else:
-        comment_form = CommentForm()
+   
+    comment_form = CommentForm()
     # showing each post Section
-    post_obj = get_object_or_404(Post, id=pid, status=1, published_date__lt=timezone.now())
+    all_posts = Post.objects.filter(published_date__lt=timezone.now(), status=1)
+    post_obj = get_object_or_404(all_posts, id=pid)
     post_obj.counted_views = post_obj.counted_views + 1
     post_obj.save()
     # checking login_needed for post
@@ -61,8 +62,8 @@ def single_view(request, pid):
         # showing registered comment Section
         comments = Comment.objects.filter(intended_post=post_obj.id, approved=True)
         # Next and Previous Section
-        filter_post = Post.objects.filter(published_date__lt=timezone.now(), status=1)
-        post_ids = [post.id for post in filter_post]
+        
+        post_ids = [post.id for post in all_posts]
         pid_index = post_ids.index(pid)
         if pid_index == 0:
             next_id = post_ids[pid_index + 1]
@@ -78,7 +79,7 @@ def single_view(request, pid):
             prev_id = post_ids[pid_index - 1]
             prev_post = Post.objects.get(id=prev_id)
         # context Section
-        context = {'post_obj': post_obj, 'next_post': next_post, 'prev_post': prev_post, 'comments': comments}
+        context = {'post_obj': post_obj, 'next_post': next_post, 'prev_post': prev_post, 'comments': comments, 'comment_form': comment_form}
         return render(request, 'blog_items/blog-single.html', context)
 
     else:
