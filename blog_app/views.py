@@ -89,8 +89,13 @@ def single_view(request, pid):
 we can use this code and filter based on other fields: published_date, created_date, ...
 def single2_view(requests, pid):
     post = get_object_or_404(Post, pk=pid, status=1, published_date__lte=timezone.now())
-    next_post = Post.objects.filter(status=1, published_date__lte=timezone.now(), id__gt=post.id).first()
-    prev_post = Post.objects.filter(status=1, published_date__lte=timezone.now(), id__lt=post.id).last()
+    # for showing first and last post
+    first_post = Post.objects.filter(status=1, published_date__lte=timezone.now(), id__gt=post.id).first()
+    last_post = Post.objects.filter(status=1, published_date__lte=timezone.now(), id__lt=post.id).last()
+    # for showing prev and next post
+    next_post=posts.filter(id__gt=post.id).order_by('id').first()
+    prev_post= posts.filter(id__lt=post.id).order_by('-id').first()
+    
     context = {'post': post, 'prev_post': prev_post, 'next_post': next_post}
     return render(requests, 'blog_items/blog-single.html', context)
 '''
