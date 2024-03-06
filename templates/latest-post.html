@@ -25,7 +25,7 @@
 											<li>
 												<a href="{% url 'blog_show:category_blog' cat_name=cat.name %}">{{cat.name}}</a>
 											</li>
-											{% endfor%}
+											{% endfor %}
 										</ul>
 									</div>
 									<a href="{% url 'blog_show:single_blog' pid=obj.id %}"><h4 class="title">{{obj.title}}</h4></a>

@@ -13,6 +13,8 @@ class BlogSitemap(Sitemap):
 
     def lastmod(self, obj):
         return obj.published_date
-
+"""
+# we use one of 'def location()' or 'get_absolute_url()'  
     def location(self, item):
         return reverse('blog_show:single_blog', kwargs={'pid': item.id})
+"""        

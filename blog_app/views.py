@@ -64,6 +64,7 @@ def single_view(request, pid):
         # Next and Previous Section
         post_ids = [post.id for post in all_posts]
         pid_index = post_ids.index(pid)
+
         if pid_index == 0:
             next_id = post_ids[pid_index + 1]
             next_post = Post.objects.get(id=next_id)
