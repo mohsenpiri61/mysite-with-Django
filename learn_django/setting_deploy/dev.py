@@ -31,3 +31,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 STATICFILES_DIRS = [BASE_DIR / "statics_asset", ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
+
+INTERNAL_IPS = [
+
+    "127.0.0.1",
+]

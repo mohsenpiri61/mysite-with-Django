@@ -16,5 +16,5 @@ sqlparse==0.4.4
 tzdata==2023.3
 urllib3==2.2.0
 webencodings==0.5.1
-mysqlclient
+mysqlclient==2.2.4
 django-compressor==4.4

@@ -16,7 +16,6 @@ def login_view(request):
                 user_name = request.POST['username']
             password = request.POST['password']
             user = auth.authenticate(username=user_name, password=password)
-
             if user is not None:
                 auth.login(request, user)
                 messages.add_message(request, messages.SUCCESS, 'Login was successful')
