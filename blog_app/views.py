@@ -114,6 +114,6 @@ def search_view(request):
         req = request.GET.get('s')
         if req:
             filter_post = filter_post.filter(content__contains=req)
-        # we can use warlus instead of lines 109, 110 as below:  if req := request.GET.get('s'):
+        # we can use warlus instead of lines 114, 115 as below:  if req := request.GET.get('s'):
     context = {'filter_post': filter_post}
     return render(request, 'blog_items/blog-home.html', context)
